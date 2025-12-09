@@ -32,8 +32,9 @@ const PatientList = () => {
           *,
           applications(id),
           patients (
-            *,
-            patient_packages(
+          *,
+          financial_ledger (amount),
+          patient_packages(
               *,
               treatments(
                 *,
@@ -59,6 +60,10 @@ const PatientList = () => {
           const medications = activePackages.map((p: any) => p.treatments.medications?.name).filter(Boolean);
           const treatmentDisplayName = medications.length > 0 ? medications.join(' + ') : "Sem tratamento ativo";
           const hasFerro = activePackages.some((p: any) => p.treatments.type === 'Aplicação Longa');
+          const ledger = patient.financial_ledger || [];
+          const balance = ledger.reduce((acc: number, item: any) => acc + Number(item.amount), 0);
+          console.log(`Paciente: ${patient.full_name}, Ledger Items: ${ledger.length}, Saldo: ${balance}`);
+          const hasDebt = balance > 0; // Se maior que zero, deve
 
           return {
             id: patient.id,
@@ -68,6 +73,7 @@ const PatientList = () => {
             treatmentStatus: treatmentStatus,
             applicationStatus: session.status,
             hasFerro: hasFerro,
+            hasDebt: hasDebt,
             sessionId: session.id,
             checkInTime: session.check_in_time,
           };
@@ -242,6 +248,7 @@ const handleStartAttendance = async (sessionId: string | null | undefined, patie
                 applicationStatus={patient.applicationStatus}
                 sessionId={patient.sessionId}
                 hasFerro={patient.hasFerro}
+                hasDebt={patient.hasDebt}
                 treatmentStatus={patient.treatmentStatus}
                 onCheckIn={handleCheckIn}
                 onRemoveFromQueue={handleRemoveFromQueue}

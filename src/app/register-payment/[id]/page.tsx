@@ -116,8 +116,34 @@ export default function RegisterPaymentPage() {
             onBack={() => router.back()}
         >
             <div className="bg-background/50 border border-border/60 rounded-xl px-4 py-2 text-right shadow-sm min-w-[150px]">
-               <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Total Pendente</p>
-               <p className="text-3xl font-bold text-primary">R$ {totalDebt.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+               {/* Lógica de Exibição de Saldo */}
+               {(() => {
+                 const isCredit = totalDebt < 0;
+                 const isZero = totalDebt === 0;
+                 const displayValue = Math.abs(totalDebt); // Sempre positivo para exibição
+                 
+                 let label = "Total Pendente";
+                 let colorClass = "text-destructive"; // Vermelho padrão
+
+                 if (isCredit) {
+                    label = "Crédito Disponível";
+                    colorClass = "text-green-600";
+                 } else if (isZero) {
+                    label = "Saldo";
+                    colorClass = "text-muted-foreground";
+                 }
+
+                 return (
+                   <>
+                     <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-0.5">
+                        {label}
+                     </p>
+                     <p className={`text-2xl font-bold ${colorClass}`}>
+                        R$ {displayValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                     </p>
+                   </>
+                 );
+               })()}
             </div>
         </PageHeader>
       

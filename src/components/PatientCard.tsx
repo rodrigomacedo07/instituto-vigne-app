@@ -25,9 +25,10 @@ export interface PatientCardProps {
   onStartAttendance?: (sessionId: string | null | undefined, patientId: string) => void;
   onAddToQueue?: (patientId: string) => void;
   showAddButton?: boolean;
+  hasDebt?: boolean;
 }
 
-export const PatientCard = ({ id, name, treatment, treatmentStatus, applicationStatus, medications, sessionId, hasFerro, onCheckIn, onRemoveFromQueue, onStartAttendance, onAddToQueue, showAddButton, nextSession, progress, total, lastWeight }: PatientCardProps) => {
+export const PatientCard = ({ id, name, treatment, treatmentStatus, applicationStatus, medications, sessionId, hasFerro, hasDebt, onCheckIn, onRemoveFromQueue, onStartAttendance, onAddToQueue, showAddButton, nextSession, progress, total, lastWeight }: PatientCardProps) => {
   const router = useRouter();
 
 const statusConfig = {
@@ -70,9 +71,16 @@ const statusConfig = {
         
              <div className="space-y-1">
           <div className="flex flex-wrap items-center gap-2">
-            {hasFerro && (
-              <span className="w-2.5 h-2.5 rounded-full bg-blue-500" title="Contém Ferro" />
+            {/* Débito (Vermelho) - Primeiro da lista (Esquerda) */}
+            {hasDebt && (
+                <span className="w-3 h-3 rounded-full bg-red-500 border border-white shadow-sm shrink-0" title="Possui Débito" />
             )}
+            
+            {/* Ferro (Azul) */}
+            {hasFerro && (
+                <span className="w-3 h-3 rounded-full bg-blue-500 border border-white shadow-sm shrink-0" title="Contém Ferro" />
+            )}
+            
             <h3 className="font-bold text-lg text-foreground leading-tight">{name}</h3>
           </div>
           

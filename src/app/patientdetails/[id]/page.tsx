@@ -131,7 +131,7 @@ const PatientDetailsPage = () => {
                         {balance > 0 ? "Pagamentos pendentes" : "Tudo em dia"}
                     </p>
                 </div>
-<div className="flex flex-col items-end gap-3">
+            <div className="flex flex-col items-end gap-3">
                     <div className="text-right">
                         <p className="text-xs uppercase text-muted-foreground font-bold">Saldo Devedor</p>
                         <p className={`text-2xl font-bold ${balance > 0 ? 'text-destructive' : 'text-green-600'}`}>

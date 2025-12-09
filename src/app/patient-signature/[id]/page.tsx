@@ -239,7 +239,13 @@ useEffect(() => {
                                 <div>
                                     <p className="text-sm text-muted-foreground mb-1">Dose aplicada</p>
                                     <p className="text-base font-bold text-foreground">
-                                        {formatNumber(app.amount)} {app.unit}
+                                        {(() => {
+                                            const unitLower = app.unit.toLowerCase();
+                                            const isApp = unitLower.includes('aplicação') || unitLower.includes('aplicacao');
+                                            const displayUnit = isApp ? (app.amount >= 2 ? 'Aplicações' : 'Aplicação') : app.unit;
+                                            
+                                            return `${formatNumber(app.amount)} ${displayUnit}`;
+                                        })()}
                                     </p>
                                 </div>
 
@@ -252,15 +258,27 @@ useEffect(() => {
                                         <div>
                                             <p className="text-sm text-muted-foreground mb-1">Saldo anterior</p>
                                             <p className="text-base font-medium text-foreground">
-                                                {formatNumber(currentBalance)} {app.unit}
-                                            </p>
+                                        {(() => {
+                                            const unitLower = app.unit.toLowerCase();
+                                            const isApp = unitLower.includes('aplicação') || unitLower.includes('aplicacao');
+                                            const displayUnit = isApp ? (currentBalance >= 2 ? 'Aplicações' : 'Aplicação') : app.unit;
+                                            
+                                            return `${formatNumber(currentBalance)} ${displayUnit}`;
+                                        })()}
+                                    </p>
                                         </div>
 
                                         <div>
                                             <p className="text-sm text-muted-foreground mb-1">Saldo remanescente</p>
                                             <p className="text-base font-bold text-orange-700">
-                                                {formatNumber(remaining)} {app.unit}
-                                            </p>
+                                                {(() => {
+                                            const unitLower = app.unit.toLowerCase();
+                                            const isApp = unitLower.includes('aplicação') || unitLower.includes('aplicacao');
+                                            const displayUnit = isApp ? (remaining >= 2 ? 'Aplicações' : 'Aplicação') : app.unit;
+                                            
+                                            return `${formatNumber(remaining)} ${displayUnit}`;
+                                        })()}
+                                    </p>
                                         </div>
                                     </>
                                 )}
@@ -286,6 +304,7 @@ useEffect(() => {
                     penColor="black"
                     canvasProps={{ className: 'w-full h-full' }}
                     backgroundColor="rgba(255,255,255,1)"
+                    clearOnResize={false}
                 />
             </div>
             <p className="text-[11px] text-muted-foreground text-center mb-8">
